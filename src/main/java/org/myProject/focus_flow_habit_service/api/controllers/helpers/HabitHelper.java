@@ -43,7 +43,8 @@ public class HabitHelper {
         if(description.trim().isEmpty()) description = "";
 
         habitRepository
-                .streamAllByUserId(userId)
+                .findAllByUserId(userId)
+                .stream()
                 .filter(anotherHabit -> anotherHabit.getTitle().equals(title))
                 .findAny()
                 .ifPresent(anotherHabit -> {

@@ -19,7 +19,4 @@ public class HabitLogDto {
     LocalDateTime scheduledDate;
 
     boolean isCompleted;
-
-    @NonNull
-    Long habitId;
 }

@@ -39,8 +39,4 @@ public class HabitEntity{
 
     @Builder.Default
     LocalDateTime createdAt = LocalDateTime.now();
-
-    @MappedCollection(idColumn = "habit_id")
-    @Builder.Default
-    List<HabitLogEntity> habitLogs = new ArrayList<>();
 }

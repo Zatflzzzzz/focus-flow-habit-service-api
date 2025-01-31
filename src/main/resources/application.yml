@@ -1,2 +1,12 @@
 server:
   port: 8184
+
+spring:
+  datasource:
+      url: ${DB_URL:jdbc:postgresql://localhost:5432/focus-flow-habit-service}
+      username: ${DB_USER:postgres}
+      password: ${DB_PASSWORD:Timofey7828102}
+      driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: always

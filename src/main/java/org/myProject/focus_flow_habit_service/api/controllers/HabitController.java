@@ -33,8 +33,8 @@ public class HabitController {
 
     HabitHelper habitHelper;
 
-    private final static String GET_HABITS = "/api/habits";
     private final static String GET_HABIT = "/api/habits/{habit_id}";
+    private final static String GET_HABITS = "/api/habits";
     private final static String CREATE_HABIT = "/api/habits";
     private final static String UPDATE_HABIT = "/api/habits/{habit_id}";
     private final static String DELETE_HABIT = "/api/habits/{habit_id}";
@@ -52,10 +52,10 @@ public class HabitController {
     @GetMapping(GET_HABITS)
     public List<HabitDto> getHabits(@RequestParam("user_id") Long userId){
 
-        Stream<HabitEntity> habits = habitRepository
-                .streamAllByUserId(userId);
+        List<HabitEntity> habits = habitRepository.findAllByUserId(userId);
 
         return habits
+                .stream()
                 .map(habitDtoFactory::makeHabitDto)
                 .collect(Collectors.toList());
     }

@@ -26,18 +26,19 @@ public class HabitDtoFactory {
                 .builder()
                 .id(habit.getId())
                 .title(habit.getTitle())
+                .description(habit.getDescription())
                 .dueDate(habit.getDueDate())
                 .timeToComplete(habit.getTimeToComplete())
-                .habitLogs(
-                        habitLogRepository
-                                .findByHabitId(habit.getId())
-                                .stream()
-                                .map(habitLogDtoFactory::makeHabitLogDto)
-                                .collect(Collectors.toList())
-                )
                 .userId(habit.getUserId())
                 .createdAt(habit.getCreatedAt())
                 .lastAction(habit.getLastAction())
+                .habitLogs(
+                        habitLogRepository
+                        .findByHabitId(habit.getId())
+                        .stream()
+                        .map(habitLogDtoFactory::makeHabitLogDto)
+                        .collect(Collectors.toList())
+                )
                 .build();
     }
 }

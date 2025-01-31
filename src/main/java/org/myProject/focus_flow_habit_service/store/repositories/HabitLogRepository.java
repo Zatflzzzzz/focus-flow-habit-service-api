@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface HabitLogRepository extends CrudRepository<HabitLogEntity, Long> {
 
-    List<HabitLogEntity> findByHabitId(long habitId);
+    List<HabitLogEntity> findByHabitId(Long habitId);
 }

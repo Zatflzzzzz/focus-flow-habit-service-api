@@ -11,8 +11,8 @@ public class HabitLogDtoFactory {
 
         return HabitLogDto
                 .builder()
+                .id(habitLog.getId())
                 .isCompleted(habitLog.isCompleted())
-                .habitId(habitLog.getHabitId())
                 .scheduledDate(habitLog.getScheduledDate())
                 .build();
     }

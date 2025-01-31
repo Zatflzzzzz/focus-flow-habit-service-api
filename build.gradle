@@ -24,6 +24,8 @@ repositories {
 }
 
 dependencies {
+	implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
+
 	implementation group: 'jakarta.transaction', name: 'jakarta.transaction-api', version: '2.0.1'
 }
 
