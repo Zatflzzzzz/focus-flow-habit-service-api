@@ -19,7 +19,7 @@ services:
 
   db:
     image: 'postgres:15'
-    container_name: focus-flow-db
+    container_name: focus-flow-habit-db
     ports:
       - '5433:5432'
     environment:

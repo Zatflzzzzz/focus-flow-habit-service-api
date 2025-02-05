@@ -1,5 +1,6 @@
 package org.myProject.focus_flow_habit_service.api.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,7 @@ public class HabitController {
     private final static String UPDATE_HABIT = "/api/habits/{habit_id}";
     private final static String DELETE_HABIT = "/api/habits/{habit_id}";
 
+    @Operation(summary = "Retrieve a habit", description = "Fetches the details of a specific habit based on its ID and user ID.")
     @GetMapping(GET_HABIT)
     public HabitDto getHabit(
             @PathVariable("habit_id") Long habitId,
@@ -49,6 +51,7 @@ public class HabitController {
         return habitDtoFactory.makeHabitDto(habit);
     }
 
+    @Operation(summary = "Retrieve all habits", description = "Fetches a list of all habits associated with a given user ID.")
     @GetMapping(GET_HABITS)
     public List<HabitDto> getHabits(@RequestParam("user_id") Long userId){
 
@@ -60,6 +63,7 @@ public class HabitController {
                 .collect(Collectors.toList());
     }
 
+    @Operation(summary = "Create a habit", description = "Creates a new habit with the specified details and assigns it to the user.")
     @PostMapping(CREATE_HABIT)
     public HabitDto createHabit(
             @RequestParam String title,
@@ -84,6 +88,7 @@ public class HabitController {
         return habitDtoFactory.makeHabitDto(habit);
     }
 
+    @Operation(summary = "Update a habit", description = "Updates the details of an existing habit, including title, description, and completion time.")
     @PatchMapping(UPDATE_HABIT)
     public HabitDto updateHabit(
             @PathVariable("habit_id") Long habitId,
@@ -107,6 +112,7 @@ public class HabitController {
         return habitDtoFactory.makeHabitDto(habit);
     }
 
+    @Operation(summary = "Delete a habit", description = "Deletes a specified habit if it belongs to the given user.")
     @DeleteMapping(DELETE_HABIT)
     public AnsDto deleteHabit(
             @PathVariable("habit_id") Long habitId,

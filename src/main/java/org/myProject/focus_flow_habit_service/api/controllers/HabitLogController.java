@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+
+import io.swagger.v3.oas.annotations.Operation;
 import org.myProject.focus_flow_habit_service.api.controllers.helpers.HabitHelper;
 import org.myProject.focus_flow_habit_service.api.controllers.helpers.HabitLogHelper;
 import org.myProject.focus_flow_habit_service.api.dto.AnsDto;
@@ -38,6 +40,7 @@ public class HabitLogController {
     private final static String UPDATE_HABIT_LOG = "/api/habit-logs/{habit_log_id}";
     private final static String DELETE_HABIT_LOG = "/api/habit-logs/{habit_log_id}";
 
+    @Operation(summary = "Retrieve habit logs", description = "Fetches the log entries of a specific habit based on habit ID and user ID.")
     @GetMapping(GET_HABIT_LOGS)
     public List<HabitLogDto> getHabitLogs(
             @PathVariable("habit_id") Long habitId,
@@ -53,6 +56,7 @@ public class HabitLogController {
                 .collect(Collectors.toList());
     }
 
+    @Operation(summary = "Create a habit log", description = "Creates a new log entry for a habit with a scheduled date and completion status.")
     @PostMapping(CREATE_HABIT_LOG)
     public HabitLogDto createHabitLog(
             @PathVariable("habit_id") Long habitId,
@@ -74,6 +78,7 @@ public class HabitLogController {
         return habitLogDtoFactory.makeHabitLogDto(habitLog);
     }
 
+    @Operation(summary = "Update a habit log", description = "Updates an existing habit log entry with a new scheduled date and completion status.")
     @PatchMapping(UPDATE_HABIT_LOG)
     public HabitLogDto updateHabitLog(
             @PathVariable("habit_log_id") Long habitLogId,
@@ -91,6 +96,7 @@ public class HabitLogController {
             return habitLogDtoFactory.makeHabitLogDto(habitLog);
     }
 
+    @Operation(summary = "Delete a habit log", description = "Deletes a habit log entry if it belongs to the given user.")
     @DeleteMapping(DELETE_HABIT_LOG)
     public AnsDto deleteHabitLog(
             @PathVariable("habit_log_id") Long habitLogId,
