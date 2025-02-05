@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: focus-flow-habit-api
+    ports:
+      - '8184:8184'
+    environment:
+      - DB_USER=postgres
+      - DB_PASSWORD=Timofey7828102
+      - DB_URL=jdbc:postgresql://db:5432/focus-flow-habit-service
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: 'postgres:15'
+    container_name: focus-flow-db
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Timofey7828102
+      POSTGRES_DB: focus-flow-habit-service
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d focus-flow-habit-service"]
+      interval: 5s
+      retries: 5
+      start_period: 10s
+      timeout: 3s
+    restart: unless-stopped
