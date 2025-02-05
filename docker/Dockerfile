@@ -1,7 +1,12 @@
+# Этап сборки
+FROM gradle:8.5-jdk21 AS build
+WORKDIR /app
+COPY . .
+RUN gradle build -x test
+
+# Этап запуска
 FROM openjdk:21
-
-COPY focus-flow-habit-service-0.0.1-SNAPSHOT.jar app.jar
-
+WORKDIR /app
+COPY --from=build /app/build/libs/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
 EXPOSE 1111
