@@ -15,6 +15,8 @@ import org.myProject.focus_flow_habit_service.api.factories.HabitLogDtoFactory;
 import org.myProject.focus_flow_habit_service.store.entities.HabitEntity;
 import org.myProject.focus_flow_habit_service.store.entities.HabitLogEntity;
 import org.myProject.focus_flow_habit_service.store.repositories.HabitLogRepository;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -44,9 +46,11 @@ public class HabitLogController {
     @GetMapping(GET_HABIT_LOGS)
     public List<HabitLogDto> getHabitLogs(
             @PathVariable("habit_id") Long habitId,
-            @RequestParam("user_id") Long userId) {
+            @AuthenticationPrincipal Jwt jwt) {
 
-        HabitEntity habit = habitHelper.getHabitOrThrowException(habitId, userId);
+        Long userId = Long.parseLong(jwt.getSubject());
+
+        habitHelper.getHabitOrThrowException(habitId, userId);
 
         List<HabitLogEntity> habitLogs = habitLogRepository.findByHabitId(habitId);
 
@@ -62,7 +66,9 @@ public class HabitLogController {
             @PathVariable("habit_id") Long habitId,
             @RequestParam("scheduled_date") LocalDateTime scheduledDate,
             @RequestParam("is_completed") boolean isCompleted,
-            @RequestParam("user_id") Long userId){
+            @AuthenticationPrincipal Jwt jwt){
+
+        Long userId = Long.parseLong(jwt.getSubject());
 
         HabitEntity habit = habitHelper.getHabitOrThrowException(habitId, userId);
 
@@ -84,23 +90,27 @@ public class HabitLogController {
             @PathVariable("habit_log_id") Long habitLogId,
             @RequestParam("scheduled_date") LocalDateTime scheduledDate,
             @RequestParam("is_completed") boolean isCompleted,
-            @RequestParam("user_id") Long userId){
+            @AuthenticationPrincipal Jwt jwt){
 
-            HabitLogEntity habitLog = habitLogHelper.getHabitLogEntityOrThrowException(habitLogId, userId);
+        Long userId = Long.parseLong(jwt.getSubject());
 
-            habitLog.setScheduledDate(scheduledDate);
-            habitLog.setCompleted(isCompleted);
+        HabitLogEntity habitLog = habitLogHelper.getHabitLogEntityOrThrowException(habitLogId, userId);
 
-            habitLogRepository.save(habitLog);
+        habitLog.setScheduledDate(scheduledDate);
+        habitLog.setCompleted(isCompleted);
 
-            return habitLogDtoFactory.makeHabitLogDto(habitLog);
+        habitLogRepository.save(habitLog);
+
+        return habitLogDtoFactory.makeHabitLogDto(habitLog);
     }
 
     @Operation(summary = "Delete a habit log", description = "Deletes a habit log entry if it belongs to the given user.")
     @DeleteMapping(DELETE_HABIT_LOG)
     public AnsDto deleteHabitLog(
             @PathVariable("habit_log_id") Long habitLogId,
-            @RequestParam("user_id") Long userId){
+            @AuthenticationPrincipal Jwt jwt){
+
+        Long userId = Long.parseLong(jwt.getSubject());
 
         HabitLogEntity habitLog = habitLogHelper.getHabitLogEntityOrThrowException(habitLogId, userId);
 

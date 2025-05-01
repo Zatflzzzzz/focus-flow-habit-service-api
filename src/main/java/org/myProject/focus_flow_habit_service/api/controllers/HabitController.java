@@ -14,6 +14,8 @@ import org.myProject.focus_flow_habit_service.store.entities.HabitEntity;
 import org.myProject.focus_flow_habit_service.store.repositories.HabitRepository;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -44,7 +46,9 @@ public class HabitController {
     @GetMapping(GET_HABIT)
     public HabitDto getHabit(
             @PathVariable("habit_id") Long habitId,
-            @RequestParam("user_id") Long userId){
+            @AuthenticationPrincipal Jwt jwt){
+
+        Long userId = Long.parseLong(jwt.getSubject());
 
         HabitEntity habit = habitHelper.getHabitOrThrowException(habitId, userId);
 
@@ -53,7 +57,9 @@ public class HabitController {
 
     @Operation(summary = "Retrieve all habits", description = "Fetches a list of all habits associated with a given user ID.")
     @GetMapping(GET_HABITS)
-    public List<HabitDto> getHabits(@RequestParam("user_id") Long userId){
+    public List<HabitDto> getHabits(@AuthenticationPrincipal Jwt jwt){
+
+        Long userId = Long.parseLong(jwt.getSubject());
 
         List<HabitEntity> habits = habitRepository.findAllByUserId(userId);
 
@@ -70,7 +76,9 @@ public class HabitController {
             @RequestParam String description,
             @RequestParam("time_to_complete") LocalTime timeToComplete,
             @RequestParam("due_date") LocalDateTime dueDate,
-            @RequestParam("user_id") Long userId){
+            @AuthenticationPrincipal Jwt jwt){
+
+        Long userId = Long.parseLong(jwt.getSubject());
 
         description = habitHelper.checkForValidityOfData(title, description, userId);
 
@@ -96,7 +104,9 @@ public class HabitController {
             @RequestParam String description,
             @RequestParam("time_to_complete") LocalTime timeToComplete,
             @RequestParam("due_date") LocalDateTime dueDate,
-            @RequestParam("user_id") Long userId){
+            @AuthenticationPrincipal Jwt jwt){
+
+        Long userId = Long.parseLong(jwt.getSubject());
 
         description = habitHelper.checkForValidityOfData(title, description, userId);
 
@@ -116,7 +126,9 @@ public class HabitController {
     @DeleteMapping(DELETE_HABIT)
     public AnsDto deleteHabit(
             @PathVariable("habit_id") Long habitId,
-            @RequestParam("user_id") Long userId){
+            @AuthenticationPrincipal Jwt jwt){
+
+        Long userId = Long.parseLong(jwt.getSubject());
 
         HabitEntity habit = habitHelper.getHabitOrThrowException(habitId, userId);
 
